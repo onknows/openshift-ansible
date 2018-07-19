@@ -14,7 +14,7 @@ cns[0:2] glusterfs_devices='[ "/dev/sdc" ]' openshift_node_group_name="node-conf
 [nfs]
 master0
 
-[lb0]
+[lb]
 lb0
 
 [glusterfs]
@@ -27,6 +27,7 @@ nodes
 etcd
 nfs
 glusterfs
+lb
 
 [OSEv3:vars]
 ansible_user=ostraaten
