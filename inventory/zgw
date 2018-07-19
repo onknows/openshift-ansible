@@ -20,6 +20,7 @@ lb0
 [glusterfs]
 cns[0:2] glusterfs_devices='[ "/dev/sdc" ]'
 
+
 # Create an OSEv3 group that contains the masters and nodes groups
 [OSEv3:children]
 masters
@@ -44,7 +45,7 @@ openshift_disable_check=memory_availability # cns[0:2] fail
 #openshift_disable_check=disk_availability
 openshift_check_min_host_memory_gb=1
 
-openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename':'/etc/origin/openshift-passwd'}]
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 openshift_master_htpasswd_users={'admin': '$apr1$Si6f57HF$Y/QwzK1zsLs5W7rrsFoVD0', 'ostraaten': '$apr1$Si6f57HF$Y/QwzK1zsLs5W7rrsFoVD0'}
 
 debug_level=2
