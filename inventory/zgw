@@ -1,0 +1,55 @@
+
+[masters]
+master[0:2] openshift_node_group_name="node-config-master" openshift_schedulable=true
+
+[etcd]
+master[0:2] openshift_node_group_name="node-config-master" openshift_schedulable=true
+
+[nodes]
+master[0:2] openshift_node_group_name="node-config-master" openshift_schedulable=true
+infra[0:1] openshift_node_group_name="node-config-infra" openshift_node_labels="{'region': 'infra','zone': 'default'}"
+node[0:2] openshift_node_group_name="node-config-compute" openshift_node_labels="{'region': 'app','zone': 'default'}"
+cns[0:2] glusterfs_devices='[ "/dev/sdc" ]' openshift_node_group_name="node-config-compute" openshift_schedulable=true openshift_node_labels="{'region': 'app','zone': 'default'}" 
+
+[nfs]
+master0
+
+[lb]
+lb0
+
+[glusterfs]
+cns[0:2] glusterfs_devices='[ "/dev/sdc" ]'
+
+
+# Create an OSEv3 group that contains the masters and nodes groups
+[OSEv3:children]
+masters
+nodes
+etcd
+nfs
+glusterfs
+lb
+
+[OSEv3:vars]
+ansible_user=ostraaten
+ansible_become=yes
+openshift_deployment_type=origin
+openshift_release="3.9"
+openshift_master_cluster_hostname=lb0.seetoo.local
+openshift_master_default_subdomain=apps.ocp.zgw.seetoo.tech
+openshift_master_cluster_public_hostname=ocp.zgw.seetoo.tech
+openshift_master_public_api_url=https://ocp.zgw.seetoo.tech
+openshift_master_public_console_url=https://ocp.zgw.seetoo.tech/console
+
+openshift_disable_check=memory_availability # cns[0:2] fail
+#openshift_disable_check=disk_availability
+openshift_check_min_host_memory_gb=1
+
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+openshift_master_htpasswd_users={'admin': '$apr1$Si6f57HF$Y/QwzK1zsLs5W7rrsFoVD0', 'ostraaten': '$apr1$Si6f57HF$Y/QwzK1zsLs5W7rrsFoVD0'}
+
+debug_level=2
+openshift_install_examples=true
+
+# openshift_master_api_port=443 # hiervoor moeten we ook Terraform aanpassen
+# openshift_master_console_port=443
